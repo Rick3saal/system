@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "BO Quick Actions — Call / SMS / Email templates",
+  "version": "1.0.0",
+  "description": "One-click Call, SMS and Email-template buttons for the BO leads list. Uses your own RingCentral and Gmail accounts.",
+  "permissions": ["clipboardWrite"],
+  "host_permissions": [
+    "https://bo.travelbusinessclass.com/*",
+    "https://www.bo.travelbusinessclass.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bo.travelbusinessclass.com/*",
+        "https://www.bo.travelbusinessclass.com/*"
+      ],
+      "js": ["quick-actions.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}
