@@ -20,12 +20,14 @@ This repository contains a **browser-side overlay** that puts the missing one-cl
 
 | Option | Who can install it | Effort to share | Pros | Cons |
 | --- | --- | --- | --- | --- |
-| **1. Userscript** (recommended here) | Any agent with Chrome/Edge/Firefox + Tampermonkey or Violentmonkey | One link + one click to install | Fastest to roll out; updates from one file; easy to customise per agent | Requires a free browser extension |
-| **2. Chrome/Edge extension** in this repo | Chrome/Edge agents, no extra store extension | Copy this folder/ZIP, then *Load unpacked* | No userscript manager; uses normal Chrome extension permissions | Manual install/update; Chrome/Edge only |
-| **3. Ask the vendor/IT to add the buttons to BO itself** | Vendor / company IT | Change request | Best long-term: everyone gets it automatically, no browser add-ons | Slowest; depends on the vendor and change approval |
-| **4. Desktop automation** (AutoHotkey / Power Automate) | Windows agents | Install a script on every PC | Works even inside apps | Fragile: breaks when the screen or window changes; harder to support |
+| **1. Bookmarklet** (use this when extensions are blocked) | Chrome/Edge/Firefox, no extension and no IT install | Drag one link to the bookmarks bar; or share one text file | Nothing to install; self-contained (no external hosting); works with existing browser policy in most cases | Must click the bookmark once after each full page reload; a strict policy can still block `javascript:` bookmarks |
+| **2. Userscript** | Agents who can install Tampermonkey/Violentmonkey | One link + one click to install | Runs automatically on every page; easiest updates | Requires a browser extension |
+| **3. This repo's own Chrome/Edge extension** | Chrome/Edge agents; no Web Store needed | Copy this folder/ZIP, then *Load unpacked* | No Tampermonkey, no store | Needs Developer mode enabled; manual updates |
+| **4. DevTools Snippet** | Agents who can open DevTools | Paste one file into Snippets | No extension, no bookmark manager | Must be run manually after each reload |
+| **5. Ask the vendor/IT to add the buttons to BO itself** | Vendor / company IT | Change request | Best long-term: everyone gets it automatically, no browser tricks | Slowest; depends on the vendor and change approval |
+| **6. Desktop automation** (AutoHotkey / Power Automate) | Windows agents | Install a script on every PC | Works even inside apps | Fragile: breaks when the screen changes; harder to support |
 
-**Recommendation:** start with option 1 on 2–3 agents for a day, then share the link with the whole team. Long term, send the option 3 request to IT/vendor using this tool as the working specification.
+**Recommendation:** if browser extensions are blocked on your PCs, use the **bookmarklet** (option 1). If extensions are allowed, the userscript (option 2) is nicer because it runs automatically. Long term, send the vendor/IT request (option 5) using this tool as the working specification.
 
 ---
 
@@ -49,6 +51,30 @@ This repository contains a **browser-side overlay** that puts the missing one-cl
 5. Reload the BO leads list. The buttons and ⚙️ appear.
 
 If the userscript is edited, run `./build-extension.sh` to regenerate `chrome-extension/quick-actions.js`, then reload the extension at `chrome://extensions`.
+
+> Loading your own unpacked extension does **not** require the Chrome Web Store or Tampermonkey. Try this before assuming extensions are blocked — many companies block the store but still allow Developer mode. If Developer mode is disabled by policy, use the bookmarklet below.
+
+---
+
+## If extensions are blocked — bookmarklet (no install)
+
+The bookmarklet is the whole tool packed into one bookmark. It does not fetch anything from the internet, so it works even when GitHub or the Web Store are blocked at the browser level.
+
+1. Open [`bookmarklet.html`](bookmarklet.html) in your browser (download the file first, or open it from the repository).
+2. Press `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to show the bookmarks bar.
+3. **Drag the blue “📞 BO Quick Actions” button onto the bookmarks bar.**
+4. Open the BO leads list and click that bookmark once. The Call / Text / Email buttons and the ⚙️ button appear immediately.
+5. Click the bookmark again after each full page reload or when you switch to a different BO page.
+
+If dragging is blocked, create a normal bookmark manually: right-click the bookmarks bar → **Add page…**, name it `BO Quick Actions`, and paste the entire contents of [`bookmarklet.txt`](bookmarklet.txt) into the URL field. (If your browser strips the `javascript:` prefix when pasting, use the DevTools Snippet method below.)
+
+### Backup method — DevTools Snippet
+
+1. On the BO page press `F12` (or `Ctrl+Shift+I`), go to **Sources → Snippets** (may be under `›`).
+2. Click **New snippet**, name it `BO Quick Actions`, paste the contents of [`devtools-snippet.js`](devtools-snippet.js), and save with `Ctrl+S`.
+3. Run it with `Ctrl+Enter` (or `Ctrl+Shift+P` → “Run snippet” → its name). Re-run after each page reload.
+
+To regenerate the bookmarklet and snippet after editing the script: `npm install` then `npm run build` in this folder.
 
 ---
 
@@ -90,6 +116,9 @@ RingCentral documents URI schemes that launch the desktop/mobile app directly:
 ## Files
 
 - `bo-quick-actions.user.js` — the userscript and single source of truth.
+- `bookmarklet.html` — drag-and-drop installer for the no-extension version.
+- `bookmarklet.txt` — the same bookmarklet as a single URL, for manual bookmark creation.
+- `devtools-snippet.js` — the same code, formatted for DevTools Snippets.
 - `chrome-extension/` — unpacked Chrome/Edge extension version (manifest + generated content script).
-- `build-extension.sh` — regenerates the extension content script after userscript edits.
+- `build-extension.sh`, `tools/build-bookmarklet.js` — regenerate the derived files after editing the userscript (`npm run build`).
 - `SHARE_WITH_TEAM.md` — a short message you can forward to other agents.
