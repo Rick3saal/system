@@ -32,7 +32,7 @@ This is slow and leads to copy/paste mistakes. We have a working prototype of th
 
 - **Option A (preferred):** ask the BO vendor to add these three buttons to the Phone and Email columns. The prototype can be used as the specification.
 - **Option B:** allow one of these on the agents' Chrome profiles:
-  - the Tampermonkey extension (or another userscript manager), **or**
+  - **force-install** Tampermonkey (or our own extension) through Chrome's enterprise policy — this is the supported admin method and does not require Developer mode to be turned on for users, **or**
   - Chrome Developer mode so we can load our own small extension from a folder, **or**
   - a policy/CSP exemption for `bo.travelbusinessclass.com` that permits our bookmarklet.
 
@@ -49,7 +49,7 @@ Thanks,
 
 - Send the text above.
 - Tell me what IT replies, and I'll adjust the solution to fit whatever they allow.
-- If they say yes to Tampermonkey → use `bo-quick-actions.user.js` from the repository.
-- If they say yes to Developer mode → use the `chrome-extension/` folder.
+- If they force-install Tampermonkey, or allow it → use `bo-quick-actions.user.js` from the repository.
+- If they force-install our extension, or allow Developer mode → use the `chrome-extension/` folder.
 - If they agree to a CSP exemption → use `bookmarks.html` or the bookmarklet.
 - If they ask the vendor to build it → send them the README/PR as the spec.
