@@ -131,6 +131,12 @@ RingCentral documents URI schemes that launch the desktop/mobile app directly:
 - The script makes no network requests of its own. Gmail and RingCentral are opened only when *you* press a button.
 - The buttons are positioned by looking for the `Phone` and `Email` column headings. If the BO layout changes significantly, the buttons may stop appearing; update the selectors in `bo-quick-actions.user.js` and re-install.
 
+## Interim helper — no browser permissions needed
+
+If nothing can be installed and `javascript:` bookmarks are blocked, [`helper.html`](helper.html) can still be used today. It is a normal local web page: open it, paste the revealed number/email from BO into the fields, and press the Call / Text / Email button. It opens RingCentral deep links and Gmail with your templates. It still requires one copy/paste per lead, but removes the app switching and template hunting.
+
+To install it, download [`helper.html`](helper.html) from GitHub (`Raw` → `Ctrl+S`, keep the `.html` extension), then double-click the file on your Desktop.
+
 ## Files
 
 - `bo-quick-actions.user.js` — the userscript and single source of truth.
@@ -140,4 +146,6 @@ RingCentral documents URI schemes that launch the desktop/mobile app directly:
 - `devtools-snippet.js` — the same code, formatted for DevTools Snippets.
 - `chrome-extension/` — unpacked Chrome/Edge extension version (manifest + generated content script).
 - `build-extension.sh`, `tools/build-bookmarklet.js` — regenerate the derived files after editing the userscript (`npm run build`).
+- `helper.html` — local, no-install fallback page for pasting a revealed number/email.
+- `IT_REQUEST.md` — ready-to-send request to IT/vendor.
 - `SHARE_WITH_TEAM.md` — a short message you can forward to other agents.

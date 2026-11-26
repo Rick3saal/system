@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BO Quick Helper — no installation needed</title>
+<style>
+  body { font:15px/1.6 -apple-system,Segoe UI,Arial,sans-serif; color:#e5e7eb; background:#0f172a; margin:0; padding:28px; }
+  main { max-width:720px; margin:0 auto; }
+  h1 { margin:0 0 6px; color:#fff; font-size:22px; }
+  .intro { background:#1e293b; border-left:4px solid #3b82f6; padding:12px 14px; border-radius:6px; margin:14px 0 22px; }
+  label { display:block; margin:0 0 12px; font-weight:bold; }
+  input, select, textarea { display:block; width:100%; box-sizing:border-box; margin-top:4px; padding:9px;
+    background:#1e293b; color:#fff; border:1px solid #475569; border-radius:6px; font:inherit; }
+  .row { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 18px; }
+  button { padding:10px 14px; border:0; border-radius:7px; cursor:pointer; font-weight:bold; color:#0b1220; }
+  .call { background:#4ade80; } .text { background:#facc15; } .mail { background:#f87171; }
+  .copy { background:#93c5fd; } .save { background:#a78bfa; }
+  details { margin-top:18px; background:#1e293b; border-radius:8px; padding:12px 14px; }
+  summary { cursor:pointer; font-weight:bold; }
+  textarea { min-height:180px; font:12px/1.5 monospace; margin:10px 0; }
+  small { color:#94a3b8; }
+  #status { margin-top:14px; font-weight:bold; }
+  a { color:#93c5fd; }
+</style>
+</head>
+<body>
+<main>
+  <h1>BO Quick Helper</h1>
+  <p class="intro">How to use: in the BO list, click the masked number/email until the full value appears and is copied. Come back here, paste it below, then press the button you need. Nothing is installed and nothing is sent anywhere.</p>
+
+  <label>Client name (for the email greeting)
+    <input id="client" placeholder="e.g. Mary Ann Powers">
+  </label>
+  <label>Phone number
+    <input id="phone" placeholder="paste the revealed number here">
+  </label>
+  <div class="row">
+    <button class="call" id="call">📞 Call in RingCentral</button>
+    <button class="text" id="text">💬 Text in RingCentral</button>
+    <button class="copy" id="copyPhone">📋 Copy number</button>
+  </div>
+  <label>Email address
+    <input id="email" placeholder="paste the revealed email here">
+  </label>
+  <div class="row">
+    <button class="mail" id="mail">✉️ Send email via Gmail</button>
+    <button class="copy" id="copyEmail">📋 Copy email</button>
+  </div>
+
+  <label>Email template
+    <select id="template"></select>
+  </label>
+
+  <details>
+    <summary>Edit email templates</summary>
+    <p><small>One per line: <b>Name | Subject | Body</b>. Use <code>\n</code> for a new line. <code>{client}</code> is replaced by the name above.</small></p>
+    <textarea id="templates"></textarea>
+    <button class="save" id="save">Save templates</button>
+  </details>
+
+  <div id="status"></div>
+  <div id="links"></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var DEFAULT_TEMPLATES = [
+    { name: 'Follow up', subject: 'Following up on your travel request',
+      body: 'Hi {client},\n\nJust following up on your request. Do you have updated travel dates?\n\nBest regards' },
+    { name: 'Quote ready', subject: 'Your travel quote is ready',
+      body: 'Hi {client},\n\nYour quote is ready. Let me know a good time to go over it.\n\nBest regards' },
+    { name: 'Documents needed', subject: 'Documents needed to continue your booking',
+      body: 'Hi {client},\n\nCould you please send the required documents so we can continue?\n\nBest regards' },
+    { name: 'Checking in', subject: 'Checking in on your plans',
+      body: 'Hi {client},\n\nJust checking in to see if you are still planning to travel with us.\n\nBest regards' }
+  ];
+  var KEY = 'boHelperTemplates';
+  var templates = DEFAULT_TEMPLATES.slice();
+
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (saved && saved.length) templates = saved;
+  } catch (e) {}
+
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(value) { return String(value == null ? '' : value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function status(text) { $('status').textContent = text; }
+  function templateLines() {
+    return templates.map(function (t) { return t.name + ' | ' + t.subject + ' | ' + t.body.split('\n').join('\\n'); }).join('\n');
+  }
+  function renderTemplates() {
+    $('template').innerHTML = templates.map(function (t, i) {
+      return '<option value="' + i + '">' + esc(t.name) + '</option>';
+    }).join('');
+    $('templates').value = templateLines();
+  }
+  renderTemplates();
+
+  function normalize(value) {
+    var raw = String(value || '').trim();
+    var plus = /^\+/.test(raw);
+    var digits = raw.replace(/\D/g, '');
+    if (digits.indexOf('00') === 0) digits = digits.slice(2);
+    if (digits.length === 10 && !plus) digits = '1' + digits;
+    return digits;
+  }
+  function fill(text, client) {
+    return String(text || '').replace(/\{client\}/g, client || '');
+  }
+  function copy(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { status('Copied: ' + text); }, fallback);
+    } else { fallback(); }
+    function fallback() {
+      try {
+        var a = document.createElement('textarea'); a.value = text; a.style.cssText = 'position:fixed;left:-9999px';
+        document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove();
+        status('Copied: ' + text);
+      } catch (e) { status('Could not copy — select the text yourself.'); }
+    }
+  }
+  function launch(uri, label) {
+    var link = document.createElement('a');
+    link.href = uri; link.textContent = label + ' (click here if nothing opened)';
+    $('links').appendChild(link);
+    $('links').appendChild(document.createElement('br'));
+    try { window.location.assign(uri); status(label + ' opened in RingCentral.'); }
+    catch (e) { status('Use the link below to open RingCentral.'); }
+  }
+  $('call').addEventListener('click', function () {
+    var digits = normalize($('phone').value);
+    if (!digits) return status('Paste the phone number first.');
+    launch('rcapp://r/call?number=' + digits, 'Call');
+  });
+  $('text').addEventListener('click', function () {
+    var digits = normalize($('phone').value);
+    if (!digits) return status('Paste the phone number first.');
+    launch('rcapp://r/sms?type=new&number=' + digits, 'Text');
+  });
+  $('copyPhone').addEventListener('click', function () { copy($('phone').value.trim()); });
+  $('copyEmail').addEventListener('click', function () { copy($('email').value.trim()); });
+  $('mail').addEventListener('click', function () {
+    var email = $('email').value.trim();
+    if (!email) return status('Paste the email address first.');
+    var t = templates[Number($('template').value)] || templates[0];
+    var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(email) +
+      '&su=' + encodeURIComponent(fill(t.subject, $('client').value)) +
+      '&body=' + encodeURIComponent(fill(t.body, $('client').value));
+    var win = window.open(url, '_blank');
+    if (!win) {
+      var link = document.createElement('a'); link.href = url; link.textContent = 'Open Gmail compose here';
+      $('links').appendChild(link);
+    }
+    status('Gmail is opening with your template.');
+  });
+  $('save').addEventListener('click', function () {
+    var parsed = $('templates').value.split('\n').map(function (line) {
+      if (!line.trim()) return null;
+      var p = line.split('|');
+      return { name: (p[0] || 'Template').trim(), subject: (p[1] || '').trim(),
+        body: p.slice(2).join('|').trim().split('\\n').join('\n') };
+    }).filter(Boolean);
+    if (!parsed.length) return status('At least one template is needed.');
+    templates = parsed;
+    try { localStorage.setItem(KEY, JSON.stringify(templates)); } catch (e) {}
+    renderTemplates();
+    status('Templates saved in this browser.');
+  });
+})();
+</script>
+</body>
+</html>
