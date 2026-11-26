@@ -29,6 +29,10 @@
   <h1>BO Quick Helper</h1>
   <p class="intro">How to use: in the BO list, click the masked number/email until the full value appears and is copied. Come back here, paste it below, then press the button you need. Nothing is installed and nothing is sent anywhere.</p>
 
+  <div class="row">
+    <button class="save" id="fromClipboard">📥 Read what I copied</button>
+  </div>
+
   <label>Client name (for the email greeting)
     <input id="client" placeholder="e.g. Mary Ann Powers">
   </label>
@@ -55,6 +59,7 @@
   <details>
     <summary>Edit email templates</summary>
     <p><small>One per line: <b>Name | Subject | Body</b>. Use <code>\n</code> for a new line. <code>{client}</code> is replaced by the name above.</small></p>
+    <p><small>You can also turn on Gmail's own Templates in Gmail → Settings → See all settings → Advanced → Templates. That works without any approval from IT.</small></p>
     <textarea id="templates"></textarea>
     <button class="save" id="save">Save templates</button>
   </details>
@@ -129,6 +134,21 @@
     try { window.location.assign(uri); status(label + ' opened in RingCentral.'); }
     catch (e) { status('Use the link below to open RingCentral.'); }
   }
+  $('fromClipboard').addEventListener('click', function () {
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      return status('Clipboard read is not allowed here — paste into the fields instead.');
+    }
+    navigator.clipboard.readText().then(function (text) {
+      var mail = String(text || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+      var tel = String(text || '').match(/\+?[\d\s().-]{7,}/);
+      if (mail) $('email').value = mail[0];
+      if (tel) $('phone').value = tel[0].trim();
+      status(mail || tel ? 'Filled from clipboard — check the values, then press a button.' : 'Nothing found in the clipboard.');
+    }, function () {
+      status('Clipboard read was blocked — paste into the fields instead.');
+    });
+  });
+
   $('call').addEventListener('click', function () {
     var digits = normalize($('phone').value);
     if (!digits) return status('Paste the phone number first.');
