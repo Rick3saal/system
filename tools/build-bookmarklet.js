@@ -81,7 +81,23 @@ async function main() {
 `;
   fs.writeFileSync(path.join(root, 'bookmarklet.html'), html);
 
-  console.log(`Wrote bookmarklet.txt (${bookmarklet.length} chars), bookmarklet.html, devtools-snippet.js (${code.length} chars)`);
+  // Importable bookmarks file: agents who cannot drag a link or paste a
+  // javascript: URL can import this from their browser's bookmark manager.
+  const bookmarks = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<!-- This is an automatically generated file. Chrome, Edge and Firefox can import it. -->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>
+<H1>Bookmarks</H1>
+<DL><p>
+    <DT><H3 PERSONAL_TOOLBAR_FOLDER="true">Bookmarks bar</H3>
+    <DL><p>
+        <DT><A HREF="${bookmarklet.replace(/&/g, '&amp;')}">&#128222; BO Quick Actions</A>
+    </DL><p>
+</DL><p>
+`;
+  fs.writeFileSync(path.join(root, 'bookmarks.html'), bookmarks);
+
+  console.log(`Wrote bookmarklet.txt (${bookmarklet.length} chars), bookmarklet.html, bookmarks.html, devtools-snippet.js (${code.length} chars)`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });

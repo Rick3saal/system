@@ -52,7 +52,7 @@ This repository contains a **browser-side overlay** that puts the missing one-cl
 
 If the userscript is edited, run `./build-extension.sh` to regenerate `chrome-extension/quick-actions.js`, then reload the extension at `chrome://extensions`.
 
-> Loading your own unpacked extension does **not** require the Chrome Web Store or Tampermonkey. Try this before assuming extensions are blocked — many companies block the store but still allow Developer mode. If Developer mode is disabled by policy, use the bookmarklet below.
+> Loading your own unpacked extension does **not** require the Chrome Web Store or Tampermonkey. If your company disables Developer mode (as this team's PCs do), skip this option and use the bookmarklet below.
 
 ---
 
@@ -66,7 +66,12 @@ The bookmarklet is the whole tool packed into one bookmark. It does not fetch an
 4. Open the BO leads list and click that bookmark once. The Call / Text / Email buttons and the ⚙️ button appear immediately.
 5. Click the bookmark again after each full page reload or when you switch to a different BO page.
 
-If dragging is blocked, create a normal bookmark manually: right-click the bookmarks bar → **Add page…**, name it `BO Quick Actions`, and paste the entire contents of [`bookmarklet.txt`](bookmarklet.txt) into the URL field. (If your browser strips the `javascript:` prefix when pasting, use the DevTools Snippet method below.)
+If dragging is blocked, use one of these instead:
+
+- **Import it:** download [`bookmarks.html`](bookmarks.html), open your browser's bookmark manager (`Ctrl+Shift+O` in Chrome/Edge), choose **⋮ → Import bookmarks**, and select that file. A `📞 BO Quick Actions` bookmark appears on the bookmarks bar. This is the easiest way to roll it out to many PCs — just send the one small file.
+- **Create it manually:** right-click the bookmarks bar → **Add page…**, name it `BO Quick Actions`, and paste the entire contents of [`bookmarklet.txt`](bookmarklet.txt) into the URL field.
+
+If your browser strips the `javascript:` prefix when pasting, use the import file or the DevTools Snippet method below.
 
 ### Backup method — DevTools Snippet
 
@@ -117,6 +122,7 @@ RingCentral documents URI schemes that launch the desktop/mobile app directly:
 
 - `bo-quick-actions.user.js` — the userscript and single source of truth.
 - `bookmarklet.html` — drag-and-drop installer for the no-extension version.
+- `bookmarks.html` — importable bookmarks file, for rollout without drag or paste.
 - `bookmarklet.txt` — the same bookmarklet as a single URL, for manual bookmark creation.
 - `devtools-snippet.js` — the same code, formatted for DevTools Snippets.
 - `chrome-extension/` — unpacked Chrome/Edge extension version (manifest + generated content script).
