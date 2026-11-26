@@ -21,6 +21,8 @@ Hi team — I found a small browser trick that removes the copy-paste steps from
 
 **If importing is not allowed:** open [`bookmarklet.html`](https://github.com/Rick3saal/system/blob/arena/c719edc7-system/bookmarklet.html) and drag the blue button onto the bookmarks bar. If that also fails, right-click the bookmarks bar → **Add page…**, name it `BO Quick Actions`, and paste the whole line from `bookmarklet.txt` into the URL field. If `javascript:` bookmarks are blocked entirely, the README has a DevTools Snippet backup method that needs no bookmark at all.
 
+**If the bookmark does nothing:** right-click it → Edit and check the URL starts with `javascript:`. If it does, import the small [`diagnose-bookmarks.html`](https://github.com/Rick3saal/system/raw/arena/c719edc7-system/diagnose-bookmarks.html) file and click the red **TEST** bookmark on the BO page. A red border + popup means bookmarklets are fine and I can fix the main one; no reaction means the BO site is blocking all bookmarklets and I need to take a different approach. Tell me which result you get.
+
 Notes:
 - Nothing is changed on the company's system or database — the buttons only run in your own browser with your own login.
 - Settings and template edits are saved per PC, in your browser.

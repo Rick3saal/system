@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BO Quick Actions — 10-second bookmarklet test</title>
+<style>
+  body { font:15px/1.6 -apple-system,Segoe UI,Arial,sans-serif; color:#e5e7eb; background:#0f172a; margin:0; padding:32px; }
+  main { max-width:700px; margin:0 auto; }
+  .test { display:inline-block; padding:14px 20px; background:#dc2626; color:#fff; border-radius:10px;
+          font-weight:bold; text-decoration:none; cursor:grab; margin:16px 0; }
+  textarea { width:100%; height:70px; box-sizing:border-box; background:#1e293b; color:#93c5fd;
+             border:1px solid #475569; border-radius:8px; padding:10px; font:12px/1.5 monospace; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Does this browser allow bookmarklets?</h1>
+  <p>Drag the red button onto your bookmarks bar, then open the BO leads page and click that bookmark once.</p>
+  <a class="test" draggable="true" href="javascript:(function()%7Bdocument.body.style.outline%3D'8px%20solid%20red'%3Balert('BOOKMARKLET%20OK')%7D)()">🧪 TEST bookmarklet</a>
+  <p><b>If it works:</b> the page gets a thick red border and a popup says “BOOKMARKLET OK”. That means bookmarklets are allowed — the problem is in our main bookmarklet, and I can fix it.</p>
+  <p><b>If nothing happens:</b> the BO site (or the browser policy) is blocking all `javascript:` bookmarks. No bookmarklet can work there, and we need a different solution — an IT/vendor change or a local proxy.</p>
+  <p>You can also import <code>diagnose-bookmarks.html</code> from the bookmark manager instead of dragging.</p>
+  <p>Manual URL, if needed:</p>
+  <textarea readonly id="u">javascript:(function(){document.body.style.outline='8px solid red';alert('BOOKMARKLET OK')})()</textarea>
+</main>
+</body>
+</html>

@@ -73,6 +73,17 @@ If dragging is blocked, use one of these instead:
 
 If your browser strips the `javascript:` prefix when pasting, use the import file or the DevTools Snippet method below.
 
+### If clicking the bookmark does nothing
+
+Do this 10-second test before anything else:
+
+1. Open [`diagnose.html`](diagnose.html) and drag the red **TEST bookmarklet** onto the bookmarks bar (or import [`diagnose-bookmarks.html`](diagnose-bookmarks.html)).
+2. Open the BO leads page and click the test bookmark once.
+3. **Red border + “BOOKMARKLET OK” popup** → bookmarklets work. The problem is in the main bookmarklet; check that the main bookmark's URL starts with `javascript:` (right-click the bookmark → Edit) and re-import `bookmarks.html` if it doesn't.
+4. **Nothing happens** → the site's Content Security Policy or browser policy is blocking all `javascript:` bookmarks. Bookmarklets cannot be made to work in that situation; use the IT/vendor route below, or a local proxy that strips the CSP header.
+
+A strict `script-src` policy silently blocks bookmarklets in Chrome; the only visible evidence is a console message, which agents here cannot see because DevTools is disabled [1](https://www.ctrlshiftcopy.com/blog/chrome-extension-vs-bookmarklet). This is the most likely cause if the test bookmark also does nothing.
+
 ### Backup method — DevTools Snippet
 
 > This team's PCs have DevTools disabled, so this method is not available to them. It is here as a fallback for other environments.
