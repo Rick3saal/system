@@ -2,6 +2,12 @@
 
 Copy the text below into an email or ticket and send it to whoever manages Chrome policy and the BO system.
 
+**Short version, if you prefer to keep it simple:**
+
+> Hi IT, our agents spend a lot of time copying masked phone numbers and emails from the BO leads list into RingCentral and Gmail. Could you either ask the BO vendor to add Call / Text / Email buttons, or approve a small approved extension/user script on our Chrome profiles? Happy to share details.
+
+**Full version below.**
+
 ---
 
 **Subject: Request to enable one-click Call / Text / Email buttons for the BO leads list**
