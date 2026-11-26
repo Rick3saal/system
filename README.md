@@ -68,12 +68,14 @@ The bookmarklet is the whole tool packed into one bookmark. It does not fetch an
 
 If dragging is blocked, use one of these instead:
 
-- **Import it:** download [`bookmarks.html`](bookmarks.html), open your browser's bookmark manager (`Ctrl+Shift+O` in Chrome/Edge), choose **⋮ → Import bookmarks**, and select that file. A `📞 BO Quick Actions` bookmark appears on the bookmarks bar. This is the easiest way to roll it out to many PCs — just send the one small file.
+- **Import it:** download [`bookmarks.html`](bookmarks.html), open your browser's bookmark manager (`Ctrl+Shift+O` / `Cmd+Shift+O` on Mac), choose **⋮ → Import bookmarks**, and select that file. A `📞 BO Quick Actions` bookmark appears on the bookmarks bar. This is the easiest way to roll it out to many PCs — just send the one small file.
 - **Create it manually:** right-click the bookmarks bar → **Add page…**, name it `BO Quick Actions`, and paste the entire contents of [`bookmarklet.txt`](bookmarklet.txt) into the URL field.
 
 If your browser strips the `javascript:` prefix when pasting, use the import file or the DevTools Snippet method below.
 
 ### Backup method — DevTools Snippet
+
+> This team's PCs have DevTools disabled, so this method is not available to them. It is here as a fallback for other environments.
 
 1. On the BO page press `F12` (or `Ctrl+Shift+I`), go to **Sources → Snippets** (may be under `›`).
 2. Click **New snippet**, name it `BO Quick Actions`, paste the contents of [`devtools-snippet.js`](devtools-snippet.js), and save with `Ctrl+S`.

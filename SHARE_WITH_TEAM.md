@@ -14,9 +14,9 @@ Hi team — I found a small browser trick that removes the copy-paste steps from
 **Setup — no software, no extension and no Developer mode (about 1 minute, once per PC):**
 
 1. Download [`bookmarks.html`](https://github.com/Rick3saal/system/raw/arena/c719edc7-system/bookmarks.html) from the shared folder.
-2. In Chrome/Edge press `Ctrl+Shift+O` to open the Bookmark Manager, click the **⋮** menu → **Import bookmarks**, and select that file.
-3. Show the bookmarks bar with `Ctrl+Shift+B`. You will see a **📞 BO Quick Actions** bookmark.
-4. Open the BO leads list and click that bookmark once. The buttons appear.
+2. In Chrome/Edge press `Ctrl+Shift+O` (`Cmd+Shift+O` on Mac) to open the Bookmark Manager, click the **⋮** menu → **Import bookmarks**, and select that file.
+3. Show the bookmarks bar with `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac). You will see a **📞 BO Quick Actions** bookmark.
+4. Open the BO leads list and click that bookmark once. You should see a green/black **“BO Quick Actions ready”** message, the new buttons in the Phone and Email columns, and a ⚙️ at the bottom right. If you don't, tell me — don't assume it worked.
 5. Click it once again after every full page reload.
 
 **If importing is not allowed:** open [`bookmarklet.html`](https://github.com/Rick3saal/system/blob/arena/c719edc7-system/bookmarklet.html) and drag the blue button onto the bookmarks bar. If that also fails, right-click the bookmarks bar → **Add page…**, name it `BO Quick Actions`, and paste the whole line from `bookmarklet.txt` into the URL field. If `javascript:` bookmarks are blocked entirely, the README has a DevTools Snippet backup method that needs no bookmark at all.

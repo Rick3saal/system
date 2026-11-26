@@ -593,6 +593,7 @@
   function start() {
     inject();
     addGear();
+    toast('BO Quick Actions ready — use ⚙️ to edit email templates');
     if (window.MutationObserver) {
       new MutationObserver(scheduleInject).observe(document.body, { childList: true, subtree: true });
     }
