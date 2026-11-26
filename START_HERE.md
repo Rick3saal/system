@@ -1,6 +1,26 @@
 # START HERE — do these steps in order
 
-## PART 1 — Test if this computer allows the bookmark at all
+## FIRST — the simplest test (no downloads)
+
+Do this test before anything else. It takes one minute.
+
+1. Show the bookmarks bar: press **Ctrl+Shift+B** (Mac: **Cmd+Shift+B**).
+2. **Right-click** on an empty part of the bookmarks bar → click **Add page…** (or **Add bookmark…**).
+3. In the **Name** box type: `TEST`
+4. In the **URL** box, **type this exactly** (type it, don't paste):
+
+   `javascript:alert('HI')`
+
+5. Click **Save**. A bookmark called **TEST** appears in the bookmarks bar.
+6. Click your BO leads tab, then click the **TEST** bookmark once.
+
+**Tell me which one happened:**
+- A popup appeared saying **HI** → bookmarks work; the earlier file just didn't save correctly. Tell me and I'll give you the fixed steps.
+- **Nothing happened** → the BO site is blocking these bookmarks. Tell me and I'll give you the next solution (no more bookmark tests).
+
+---
+
+## PART 1 — Test if this computer allows the bookmark at all (older method)
 
 ### Step 1
 
